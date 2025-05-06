@@ -39,7 +39,7 @@ const Coach = () => {
     if (input.trim() === "") return;
     
     // Add user message
-    const newUserMessage = {
+    const newUserMessage: Message = {
       id: Date.now().toString(),
       content: input,
       sender: "user",
@@ -59,7 +59,7 @@ const Coach = () => {
         "How have you been feeling lately? Tracking your mood can help identify patterns."
       ];
       
-      const aiResponse = {
+      const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
         content: responses[Math.floor(Math.random() * responses.length)],
         sender: "assistant",
@@ -89,7 +89,7 @@ const Coach = () => {
           <CardTitle>Chat with your wellness coach</CardTitle>
         </CardHeader>
         
-        <CardContent className="flex-1 flex flex-col">
+        <CardContent className="flex-1 flex flex-col overflow-hidden">
           <div className="flex-1 overflow-y-auto mb-4 pr-2">
             {messages.map((message) => (
               <div 
@@ -97,7 +97,7 @@ const Coach = () => {
                 className={`flex mb-4 ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 {message.sender === "assistant" && (
-                  <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center mr-3">
+                  <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center mr-3 flex-shrink-0">
                     AI
                   </div>
                 )}
@@ -132,7 +132,7 @@ const Coach = () => {
                 </div>
                 
                 {message.sender === "user" && (
-                  <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center ml-3">
+                  <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center ml-3 flex-shrink-0">
                     You
                   </div>
                 )}
@@ -141,7 +141,7 @@ const Coach = () => {
             <div ref={messagesEndRef} />
           </div>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 mt-auto">
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}

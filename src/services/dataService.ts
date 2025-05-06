@@ -3,7 +3,9 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { format } from 'date-fns';
 
-export type MoodType = 'happy' | 'calm' | 'neutral' | 'sad' | 'anxious';
+// Updated MoodType to support emoji
+export type MoodType = '😔' | '🙁' | '😐' | '🙂' | '😁';
+
 export type MoodEntry = {
   id: string;
   date: string;
