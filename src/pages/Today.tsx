@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Calendar, Check, Heart } from "lucide-react";
+import { Calendar, Check, Heart, Smile } from "lucide-react";
 import { useStore, ensureDailyAffirmation, formatDate, MoodType } from "@/services/dataService";
 import AffirmationCard from "@/components/affirmations/AffirmationCard";
 import MoodSelector from "@/components/mood/MoodSelector";
