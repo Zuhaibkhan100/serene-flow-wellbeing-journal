@@ -117,7 +117,9 @@ const Coach = () => {
             backgroundSize: '200% 200%',
             animation: 'gradientFlow 8s ease infinite'
           }}
-        />
+        >
+          {/* Empty div for gradient animation */}
+        </motion.div>
         
         <CardHeader className="relative z-10 border-b border-white/20">
           <CardTitle className="text-xl text-primary flex items-center">

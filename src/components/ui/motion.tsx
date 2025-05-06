@@ -52,6 +52,13 @@ const motion = {
       </framerMotion.div>
     );
   },
+  main: ({ children, ...props }: HTMLMotionProps<"main">) => {
+    return (
+      <framerMotion.main {...props}>
+        {children}
+      </framerMotion.main>
+    );
+  },
   h1: ({ children, ...props }: HTMLMotionProps<"h1">) => {
     return (
       <framerMotion.h1 {...props}>

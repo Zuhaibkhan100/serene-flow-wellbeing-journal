@@ -3,28 +3,28 @@ import { Card, CardContent } from "@/components/ui/card";
 import { MoodEntry, MoodType } from "@/services/dataService";
 
 // Emoji and color mapping for different mood types
-const moodEmoji: Record<MoodType, string> = {
-  happy: "😊",
-  calm: "😌",
-  neutral: "😐",
-  sad: "😔",
-  anxious: "😰"
+const moodEmoji: Record<string, string> = {
+  "😁": "😁", // Great
+  "🙂": "🙂", // Good 
+  "😐": "😐", // Neutral
+  "🙁": "🙁", // Down
+  "😔": "😔"  // Sad
 };
 
-const moodColors: Record<MoodType, string> = {
-  happy: "bg-glow-50",
-  calm: "bg-calm-50",
-  neutral: "bg-gray-50",
-  sad: "bg-serene-50",
-  anxious: "bg-red-50"
+const moodColors: Record<string, string> = {
+  "😁": "bg-glow-50",
+  "🙂": "bg-calm-50",
+  "😐": "bg-gray-50",
+  "🙁": "bg-serene-50",
+  "😔": "bg-red-50"
 };
 
-const moodLabels: Record<MoodType, string> = {
-  happy: "Happy",
-  calm: "Calm",
-  neutral: "Neutral",
-  sad: "Sad",
-  anxious: "Anxious"
+const moodLabels: Record<string, string> = {
+  "😁": "Great",
+  "🙂": "Good",
+  "😐": "Neutral",
+  "🙁": "Down",
+  "😔": "Sad"
 };
 
 interface MoodCardProps {
