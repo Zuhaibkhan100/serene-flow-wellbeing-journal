@@ -84,18 +84,29 @@ const Coach = () => {
   };
 
   return (
-    <div className="container max-w-4xl mx-auto space-y-6 animate-fade-in">
+    <div 
+      className="container max-w-4xl mx-auto space-y-6 animate-fade-in relative"
+      style={{ 
+        backgroundImage: `url('/lovable-uploads/d3aceacc-ff01-444a-91c9-68a5c848485e.png')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: 'calc(100vh - 120px)',
+        borderRadius: '1rem',
+        padding: '2rem'
+      }}
+    >
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
+        className="z-10 relative"
       >
-        <h1 className="text-3xl font-serif">Wellness Coach</h1>
-        <p className="text-muted-foreground mt-2">AI wellness companion</p>
+        <h1 className="text-3xl font-serif text-white drop-shadow-lg">Wellness Coach</h1>
+        <p className="text-white/80 mt-2 drop-shadow-md">AI wellness companion</p>
       </motion.div>
       
       <Card 
-        className="h-[calc(100vh-240px)] flex flex-col relative overflow-hidden"
+        className="h-[calc(100vh-240px)] flex flex-col relative overflow-hidden z-10"
         style={{
           background: 'rgba(255, 255, 255, 0.6)',
           backdropFilter: 'blur(10px)',
@@ -103,22 +114,13 @@ const Coach = () => {
           boxShadow: '0 8px 32px rgba(31, 38, 135, 0.15)'
         }}
       >
-        <div 
-          className="absolute inset-0 z-0 bg-cover bg-center opacity-20"
-          style={{ backgroundImage: `url('/lovable-uploads/4770a3aa-b1f3-4aeb-9d07-83a894ba8edb.png')` }}
-        />
-        
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
           className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-300 to-green-300"
-          style={{ 
-            backgroundSize: '200% 200%',
-            animation: 'gradientFlow 8s ease infinite'
-          }}
         >
-          {/* Empty div for gradient animation */}
+          <span className="hidden">Gradient bar</span>
         </motion.div>
         
         <CardHeader className="relative z-10 border-b border-white/20">

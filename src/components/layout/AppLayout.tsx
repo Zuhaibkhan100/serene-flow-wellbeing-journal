@@ -4,6 +4,7 @@ import { Sidebar } from "./Sidebar";
 import { Outlet, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { motion } from "@/components/ui/motion";
+import UserMenu from "./UserMenu";
 
 export const AppLayout = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
@@ -38,12 +39,15 @@ export const AppLayout = () => {
         
         <div className="relative flex flex-1 z-10 w-full">
           <Sidebar />
-          <motion.main 
+          <motion.main
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
             className="flex-1 p-4 md:p-6 overflow-auto max-h-screen"
           >
+            <div className="flex justify-end mb-2">
+              <UserMenu />
+            </div>
             <Outlet />
           </motion.main>
         </div>
