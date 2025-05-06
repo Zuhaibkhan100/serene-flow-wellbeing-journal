@@ -1,65 +1,34 @@
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Calendar, Check, Heart, Smile } from "lucide-react";
-import { useStore, ensureDailyAffirmation, formatDate, MoodType } from "@/services/dataService";
+import { Check, Heart, Smile, Clock, MessageSquare, ChevronRight } from "lucide-react";
+import { useStore, ensureDailyAffirmation, formatDate } from "@/services/dataService";
 import AffirmationCard from "@/components/affirmations/AffirmationCard";
 import MoodSelector from "@/components/mood/MoodSelector";
+import { Link } from "react-router-dom";
+import { HabitsList } from "@/components/habits/HabitsList";
+import { StudyTimer } from "@/components/focus/StudyTimer";
+import { BreathingExercise } from "@/components/meditation/BreathingExercise";
 
 const Today = () => {
   ensureDailyAffirmation();
   
   const { 
     dailyAffirmation,
-    addMoodEntry,
-    addGratitudeEntry,
+    habits,
     getTodaysMoodEntry,
-    getTodaysGratitudeEntry
   } = useStore();
   
-  const [selectedMood, setSelectedMood] = useState<MoodType | null>(null);
-  const [moodNote, setMoodNote] = useState("");
-  const [gratitudeText, setGratitudeText] = useState("");
-  
   const todaysMoodEntry = getTodaysMoodEntry();
-  const todaysGratitudeEntry = getTodaysGratitudeEntry();
-
-  // Initialize state from existing entries
-  useEffect(() => {
-    if (todaysMoodEntry) {
-      setSelectedMood(todaysMoodEntry.mood);
-      setMoodNote(todaysMoodEntry.note || "");
-    }
-    if (todaysGratitudeEntry) {
-      setGratitudeText(todaysGratitudeEntry.text);
-    }
-  }, [todaysMoodEntry, todaysGratitudeEntry]);
-
-  const handleSaveMood = () => {
-    if (selectedMood) {
-      addMoodEntry({
-        date: formatDate(new Date()),
-        mood: selectedMood,
-        note: moodNote.trim() || undefined
-      });
-    }
-  };
-
-  const handleSaveGratitude = () => {
-    if (gratitudeText.trim()) {
-      addGratitudeEntry({
-        date: formatDate(new Date()),
-        text: gratitudeText.trim()
-      });
-    }
-  };
+  const completedHabits = habits.filter(habit => 
+    habit.completedDates.includes(formatDate(new Date()))
+  ).length;
 
   return (
-    <div className="container max-w-4xl mx-auto space-y-8 animate-fade-in">
-      <h1 className="text-3xl font-serif text-center">Welcome to your day</h1>
+    <div className="container max-w-6xl mx-auto space-y-8 animate-fade-in">
+      <h1 className="text-3xl font-serif text-center">Welcome to SereniFlow</h1>
       
       {/* Daily Affirmation */}
       <div className="flex justify-center">
@@ -68,84 +37,131 @@ const Today = () => {
         )}
       </div>
 
-      {/* Main Content */}
-      <Tabs defaultValue="mood" className="space-y-6">
-        <TabsList className="grid grid-cols-2 w-full max-w-md mx-auto">
-          <TabsTrigger value="mood" className="flex gap-2 items-center">
-            <Smile className="h-4 w-4" />
-            <span>Mood Check-in</span>
-          </TabsTrigger>
-          <TabsTrigger value="gratitude" className="flex gap-2 items-center">
-            <Heart className="h-4 w-4" />
-            <span>Gratitude</span>
-          </TabsTrigger>
-        </TabsList>
-
-        {/* Mood Tab */}
-        <TabsContent value="mood">
-          <Card className="border border-serene-100">
-            <CardHeader>
-              <CardTitle className="text-center text-xl">How are you feeling today?</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="flex justify-center">
-                <MoodSelector 
-                  selectedMood={selectedMood} 
-                  onMoodSelect={setSelectedMood}
-                />
+      {/* Main Dashboard Content */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Mood Section */}
+        <Card className="border border-serene-100">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className="text-xl">
+              <div className="flex items-center gap-2">
+                <Smile className="h-5 w-5" />
+                <span>Today's Mood</span>
               </div>
-              
-              <div className="space-y-2">
-                <label htmlFor="mood-note" className="text-sm font-medium">Add a note (optional)</label>
-                <Textarea
-                  id="mood-note"
-                  value={moodNote}
-                  onChange={(e) => setMoodNote(e.target.value)}
-                  placeholder="What's making you feel this way?"
-                  className="min-h-[100px] resize-none"
-                />
-              </div>
-              
-              <Button 
-                className="w-full" 
-                onClick={handleSaveMood}
-                disabled={!selectedMood}
-              >
-                <Check className="mr-2 h-4 w-4" />
-                {todaysMoodEntry ? "Update" : "Save"} Mood
+            </CardTitle>
+            <Link to="/mood">
+              <Button variant="ghost" size="sm" className="gap-1">
+                <span>View Details</span>
+                <ChevronRight className="h-4 w-4" />
               </Button>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Gratitude Tab */}
-        <TabsContent value="gratitude">
-          <Card className="border border-serene-100">
-            <CardHeader>
-              <CardTitle className="text-center text-xl">What's one thing you're grateful for?</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="space-y-2">
-                <Textarea
-                  value={gratitudeText}
-                  onChange={(e) => setGratitudeText(e.target.value)}
-                  placeholder="I'm grateful for..."
-                  className="min-h-[150px] resize-none"
-                />
+            </Link>
+          </CardHeader>
+          <CardContent>
+            {todaysMoodEntry ? (
+              <div className="flex flex-col items-center gap-4">
+                <div className="text-5xl">{todaysMoodEntry.mood}</div>
+                <p className="text-muted-foreground text-center">
+                  {todaysMoodEntry.note || "No notes added for today."}
+                </p>
               </div>
-              
-              <Button 
-                className="w-full" 
-                onClick={handleSaveGratitude}
-                disabled={!gratitudeText.trim()}
-              >
-                <Check className="mr-2 h-4 w-4" />
-                {todaysGratitudeEntry ? "Update" : "Save"} Gratitude
+            ) : (
+              <div className="flex flex-col items-center gap-4">
+                <p className="text-muted-foreground">You haven't logged your mood today</p>
+                <Link to="/mood">
+                  <Button>
+                    <Smile className="mr-2 h-4 w-4" />
+                    Check In
+                  </Button>
+                </Link>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Habits Section */}
+        <Card className="border border-serene-100">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className="text-xl">
+              <div className="flex items-center gap-2">
+                <Check className="h-5 w-5" />
+                <span>Daily Habits</span>
+              </div>
+            </CardTitle>
+            <Link to="/habits">
+              <Button variant="ghost" size="sm" className="gap-1">
+                <span>View All</span>
+                <ChevronRight className="h-4 w-4" />
               </Button>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+            </Link>
+          </CardHeader>
+          <CardContent>
+            {habits.length > 0 ? (
+              <>
+                <div className="text-sm mb-4 text-muted-foreground">
+                  {completedHabits} of {habits.length} habits completed today
+                </div>
+                <HabitsList limit={3} />
+              </>
+            ) : (
+              <div className="flex flex-col items-center gap-4">
+                <p className="text-muted-foreground">You haven't created any habits yet</p>
+                <Link to="/habits">
+                  <Button>
+                    <Check className="mr-2 h-4 w-4" />
+                    Create Habits
+                  </Button>
+                </Link>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+        
+        {/* Quick Access Tools */}
+        <Card className="border border-serene-100 md:col-span-2">
+          <CardHeader>
+            <CardTitle className="text-xl">Quick Access Tools</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Tabs defaultValue="breathe" className="w-full">
+              <TabsList className="grid grid-cols-3 w-full max-w-md mx-auto mb-4">
+                <TabsTrigger value="breathe" className="flex gap-2 items-center">
+                  <Clock className="h-4 w-4" />
+                  <span>Breathe</span>
+                </TabsTrigger>
+                <TabsTrigger value="timer" className="flex gap-2 items-center">
+                  <Clock className="h-4 w-4" />
+                  <span>Focus Timer</span>
+                </TabsTrigger>
+                <TabsTrigger value="coach" className="flex gap-2 items-center">
+                  <MessageSquare className="h-4 w-4" />
+                  <span>AI Coach</span>
+                </TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="breathe">
+                <BreathingExercise />
+              </TabsContent>
+              
+              <TabsContent value="timer">
+                <StudyTimer />
+              </TabsContent>
+              
+              <TabsContent value="coach">
+                <div className="flex flex-col items-center gap-4 py-4">
+                  <p className="text-muted-foreground text-center">
+                    Chat with your AI wellness coach for personalized advice and support
+                  </p>
+                  <Link to="/coach">
+                    <Button>
+                      <MessageSquare className="mr-2 h-4 w-4" />
+                      Open Coach
+                    </Button>
+                  </Link>
+                </div>
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };

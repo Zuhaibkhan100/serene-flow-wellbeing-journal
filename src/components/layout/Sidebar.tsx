@@ -1,5 +1,15 @@
 
-import { Calendar, Heart, Plus, Smile } from "lucide-react";
+import { 
+  Calendar, 
+  Heart, 
+  Home, 
+  MessageSquare, 
+  Settings, 
+  Clock, 
+  Smile, 
+  Compass,
+  User
+} from "lucide-react";
 import { useLocation, Link } from "react-router-dom";
 import {
   Sidebar as SidebarComponent,
@@ -12,35 +22,71 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarTrigger
+  SidebarTrigger,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 
 const menuItems = [
   {
-    title: "Today",
+    title: "Dashboard",
     path: "/",
+    icon: Home,
+  },
+  {
+    title: "Mood Tracker",
+    path: "/mood",
     icon: Smile,
+    subItems: [
+      { title: "Daily Check-in", path: "/mood" },
+      { title: "Mood Analytics", path: "/mood/analytics" }
+    ]
   },
   {
-    title: "Habits",
+    title: "Habit Tracker",
     path: "/habits",
-    icon: Plus,
-  },
-  {
-    title: "Journal",
-    path: "/journal",
     icon: Calendar,
   },
   {
     title: "Affirmations",
     path: "/affirmations",
     icon: Heart,
+  },
+  {
+    title: "Meditations",
+    path: "/meditations",
+    icon: Clock,
+  },
+  {
+    title: "Wellness Coach",
+    path: "/coach",
+    icon: MessageSquare,
+  },
+  {
+    title: "Explore",
+    path: "/explore",
+    icon: Compass,
+  },
+  {
+    title: "Settings",
+    path: "/settings",
+    icon: Settings,
   }
 ];
 
 export const Sidebar = () => {
   const location = useLocation();
+
+  const isActiveRoute = (path: string) => {
+    if (path === "/") return location.pathname === "/";
+    return location.pathname.startsWith(path);
+  };
+
+  const isActiveSubRoute = (path: string) => {
+    return location.pathname === path;
+  };
 
   return (
     <SidebarComponent>
@@ -48,7 +94,8 @@ export const Sidebar = () => {
         <div className="px-3 py-4 flex items-center">
           <SidebarTrigger className="p-0 mr-2 h-9 w-9"/>
           <Link to="/" className="flex items-center space-x-2">
-            <span className="font-serif text-2xl font-medium bg-gradient-to-r from-serene-600 to-calm-600 bg-clip-text text-transparent">
+            <Heart className="text-purple-500 h-6 w-6" />
+            <span className="font-serif text-2xl font-medium bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
               SereniFlow
             </span>
           </Link>
@@ -56,25 +103,36 @@ export const Sidebar = () => {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Dashboard</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <Link 
-                      to={item.path} 
-                      className={cn(
-                        "flex items-center space-x-2 rounded-md px-3 py-2 w-full",
-                        location.pathname === item.path ? 
-                          "bg-accent text-accent-foreground" : 
-                          "hover:bg-muted transition-colors"
-                      )}
-                    >
+                  <SidebarMenuButton 
+                    asChild
+                    isActive={isActiveRoute(item.path)}
+                  >
+                    <Link to={item.path} className="flex items-center space-x-2">
                       <item.icon className="h-5 w-5" />
                       <span>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
+                  
+                  {item.subItems && isActiveRoute(item.path) && (
+                    <SidebarMenuSub>
+                      {item.subItems.map(subItem => (
+                        <SidebarMenuSubItem key={subItem.title}>
+                          <SidebarMenuSubButton
+                            asChild
+                            isActive={isActiveSubRoute(subItem.path)}
+                          >
+                            <Link to={subItem.path}>
+                              {subItem.title}
+                            </Link>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      ))}
+                    </SidebarMenuSub>
+                  )}
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
@@ -82,7 +140,16 @@ export const Sidebar = () => {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="py-4 px-3">
-        <p className="text-xs text-muted-foreground">SereniFlow v1.0</p>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild>
+              <Link to="/profile" className="flex items-center space-x-2">
+                <User className="h-5 w-5" />
+                <span>Profile</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarFooter>
     </SidebarComponent>
   );
