@@ -17,7 +17,9 @@ import Coach from "@/pages/Coach";
 import MoodAnalytics from "@/pages/MoodAnalytics";
 import MoodTracker from "@/pages/MoodTracker";
 import NotFound from "@/pages/NotFound";
+import DocumentReader from "@/pages/DocumentReader";
 import { ensureDailyAffirmation } from "@/services/dataService";
+import { Helmet } from 'react-helmet';
 
 const queryClient = new QueryClient();
 
@@ -54,6 +56,9 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
+        <Helmet>
+          <title>SereniFlow</title>
+        </Helmet>
         <BrowserRouter>
           <Toaster />
           <Sonner />
@@ -73,6 +78,7 @@ const App = () => {
               <Route path="/coach" element={<Coach />} />
               <Route path="/mood" element={<MoodTracker />} />
               <Route path="/mood/analytics" element={<MoodAnalytics />} />
+              <Route path="/documents" element={<DocumentReader />} />
               <Route path="/settings" element={<Today />} />
               <Route path="/explore" element={<Today />} />
               <Route path="/profile" element={<Today />} />
@@ -87,3 +93,4 @@ const App = () => {
 };
 
 export default App;
+

@@ -8,7 +8,8 @@ import {
   Clock, 
   Smile, 
   Compass,
-  User
+  User,
+  BookOpen
 } from "lucide-react";
 import { useLocation, Link } from "react-router-dom";
 import {
@@ -63,6 +64,11 @@ const menuItems = [
     title: "Wellness Coach",
     path: "/coach",
     icon: MessageSquare,
+  },
+  {
+    title: "Document Reader",
+    path: "/documents",
+    icon: BookOpen,
   },
   {
     title: "Explore",
