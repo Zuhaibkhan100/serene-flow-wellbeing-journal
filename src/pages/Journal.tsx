@@ -6,7 +6,7 @@ const Journal = () => {
   const { moodEntries, gratitudeEntries } = useStore();
   
   return (
-    <div className="container max-w-4xl mx-auto space-y-6 animate-fade-in">
+    <div className="container max-w-3xl mx-auto space-y-6 animate-fade-in">
       <h1 className="text-3xl font-serif">Journal</h1>
       
       <MoodHistory 

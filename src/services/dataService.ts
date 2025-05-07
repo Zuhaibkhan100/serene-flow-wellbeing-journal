@@ -44,6 +44,7 @@ type StoreState = {
   dailyAffirmation: Affirmation | null;
   addMoodEntry: (entry: Omit<MoodEntry, 'id'>) => void;
   addHabit: (habit: Omit<Habit, 'id' | 'completedDates' | 'createdAt'>) => void;
+  deleteHabit: (habitId: string) => void;
   toggleHabitCompletion: (habitId: string, date: string) => void;
   addAffirmation: (affirmation: Omit<Affirmation, 'id' | 'createdAt' | 'isFavorite'>) => void;
   toggleFavoriteAffirmation: (id: string) => void;
@@ -111,6 +112,10 @@ export const useStore = create<StoreState>()(
           completedDates: [],
           createdAt: formatDate(new Date())
         }]
+      })),
+
+      deleteHabit: (habitId) => set((state) => ({
+        habits: state.habits.filter(habit => habit.id !== habitId)
       })),
 
       toggleHabitCompletion: (habitId, date) => set((state) => {
