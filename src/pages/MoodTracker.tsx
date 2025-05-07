@@ -6,12 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { useStore, formatDate } from "@/services/dataService";
+import { useStore, formatDate, MoodType } from "@/services/dataService";
 import { useToast } from "@/components/ui/use-toast";
 import { ScrollArea } from "@/components/ui/scroll-area";
-
-type MoodEmoji = '😔' | '🙁' | '😐' | '🙂' | '😁';
-type MoodName = 'Sad' | 'Down' | 'Okay' | 'Good' | 'Great';
+import MoodSelector from "@/components/mood/MoodSelector";
 
 interface ActivityTag {
   name: string;
@@ -24,7 +22,7 @@ const MoodTracker = () => {
   const navigate = useNavigate();
   
   // State for mood selection
-  const [selectedMood, setSelectedMood] = useState<MoodEmoji | null>(null);
+  const [selectedMood, setSelectedMood] = useState<MoodType | null>(null);
   const [moodLevel, setMoodLevel] = useState<number>(5);
   const [note, setNote] = useState<string>("");
   
@@ -45,14 +43,6 @@ const MoodTracker = () => {
     { name: "Self-care", selected: false },
     { name: "Resting", selected: false },
   ]);
-
-  const moods: { emoji: MoodEmoji; name: MoodName }[] = [
-    { emoji: '😔', name: 'Sad' },
-    { emoji: '🙁', name: 'Down' },
-    { emoji: '😐', name: 'Okay' },
-    { emoji: '🙂', name: 'Good' },
-    { emoji: '😁', name: 'Great' },
-  ];
 
   // Toggle activity tag selection
   const toggleActivityTag = (index: number) => {
@@ -117,24 +107,7 @@ const MoodTracker = () => {
         </CardHeader>
         <CardContent className="space-y-8">
           {/* Mood Emoji Selection */}
-          <div className="flex justify-center space-x-10">
-            {moods.map((mood) => (
-              <div
-                key={mood.name}
-                className="flex flex-col items-center cursor-pointer"
-                onClick={() => setSelectedMood(mood.emoji)}
-              >
-                <div
-                  className={`text-4xl transition-transform hover:scale-110 ${
-                    selectedMood === mood.emoji ? "scale-125 drop-shadow-md" : ""
-                  }`}
-                >
-                  {mood.emoji}
-                </div>
-                <div className="mt-2 text-sm">{mood.name}</div>
-              </div>
-            ))}
-          </div>
+          <MoodSelector selectedMood={selectedMood} onMoodSelect={setSelectedMood} />
           
           {/* Mood Level Slider */}
           <div className="space-y-2">

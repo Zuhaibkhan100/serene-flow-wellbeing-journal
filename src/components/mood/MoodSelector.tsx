@@ -3,11 +3,11 @@ import { cn } from "@/lib/utils";
 import { MoodType } from "@/services/dataService";
 
 interface MoodSelectorProps {
-  selectedMood: string | null;
-  onMoodSelect: (mood: string) => void;
+  selectedMood: MoodType | null;
+  onMoodSelect: (mood: MoodType) => void;
 }
 
-const moods: { type: string; emoji: string; label: string }[] = [
+const moods: { type: MoodType; emoji: string; label: string }[] = [
   { type: "😁", emoji: "😁", label: "Great" },
   { type: "🙂", emoji: "🙂", label: "Good" },
   { type: "😐", emoji: "😐", label: "Neutral" },
